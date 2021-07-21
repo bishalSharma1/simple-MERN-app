@@ -5,7 +5,7 @@ const gr = require('gravatar')
 const bcrypt = require('bcryptjs')
 
 router.route('/').get((req, res) => {
-  res.status(200).json({ message: 'working' })
+  res.status(200).json({ message: 'works' })
 })
 router.route('/register').post((req, res) => {
   const { name, email, password } = req.body
@@ -45,6 +45,28 @@ router.route('/register').post((req, res) => {
       })
     }
   })
+})
+
+router.route('/login').post((req, res) => {
+  const { email, password } = req.body
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ email: 'email not found' })
+      }
+      //prooceed to check password
+      bcrypt
+        .compare(password, user.password)
+        .then((isMatch) => {
+          if (isMatch) {
+            res.status(200).json({ message: 'logged in' })
+          } else {
+            return res.status(400).json({ password: 'incorrect password' })
+          }
+        })
+        .catch((err) => console.log(err))
+    })
+    .catch((err) => console.log(err))
 })
 
 module.exports = router
