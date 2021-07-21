@@ -8,6 +8,7 @@ const port = process.env.PORT || 5000
 const users = require('./routes/users.js')
 const posts = require('./routes/posts.js')
 const profile = require('./routes/profile.js')
+const { urlencoded } = require('express')
 
 mongoose
   .connect(process.env.DBURI, {
@@ -23,6 +24,8 @@ mongoose
   .catch((error) => {
     console.log(error)
   })
+
+app.use(express.json())
 
 app.use('/api/users', users)
 app.use('/api/profile', profile)
