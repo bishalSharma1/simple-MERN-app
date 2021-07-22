@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
 app.use(express.json())
-app.use(epxress.urlencoded())
+app.use(express.urlencoded({ extended: false }))
 const passport = require('passport')
 
 require('dotenv').config()
@@ -11,7 +11,6 @@ const port = process.env.PORT || 5000
 const users = require('./routes/users.js')
 const posts = require('./routes/posts.js')
 const profile = require('./routes/profile.js')
-const { urlencoded } = require('express')
 
 mongoose
   .connect(process.env.DBURI, {
@@ -32,6 +31,7 @@ mongoose
 app.use(passport.initialize())
 
 //passport config
+require('./config/passport.js')(passport)
 
 //use routes
 app.use('/api/users', users)

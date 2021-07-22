@@ -5,6 +5,7 @@ const gr = require('gravatar')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const passport = require('passport')
 
 router.route('/').get((req, res) => {
   res.status(200).json({ message: 'works' })
@@ -56,7 +57,7 @@ router.route('/login').post((req, res) => {
       if (!user) {
         return res.status(404).json({ email: 'email not found' })
       }
-      //prooceed to check password
+      //proceed to check password
       bcrypt
         .compare(password, user.password)
         .then((isMatch) => {
@@ -82,5 +83,11 @@ router.route('/login').post((req, res) => {
     })
     .catch((err) => console.log(err))
 })
+
+router
+  .route('/current')
+  .get(passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.json({ name: req.user.name })
+  })
 
 module.exports = router
