@@ -6,11 +6,16 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const passport = require('passport')
+const validate = require('../validation/register.js')
 
 router.route('/').get((req, res) => {
   res.status(200).json({ message: 'works' })
 })
 router.route('/register').post((req, res) => {
+  const { errors, isValid } = validate(req.body)
+  if (!isValid) {
+    return res.json(errors)
+  }
   const { name, email, password } = req.body
   User.findOne({
     email: email,
