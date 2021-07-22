@@ -1,6 +1,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
+app.use(express.json())
+app.use(epxress.urlencoded())
+const passport = require('passport')
 
 require('dotenv').config()
 const port = process.env.PORT || 5000
@@ -25,8 +28,12 @@ mongoose
     console.log(error)
   })
 
-app.use(express.json())
+//passport middleware
+app.use(passport.initialize())
 
+//passport config
+
+//use routes
 app.use('/api/users', users)
 app.use('/api/profile', profile)
 app.use('/api/posts', posts)

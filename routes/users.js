@@ -3,6 +3,8 @@ const router = express.Router()
 const User = require('../models/User.js')
 const gr = require('gravatar')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 router.route('/').get((req, res) => {
   res.status(200).json({ message: 'works' })
@@ -59,7 +61,19 @@ router.route('/login').post((req, res) => {
         .compare(password, user.password)
         .then((isMatch) => {
           if (isMatch) {
-            res.status(200).json({ message: 'logged in' })
+            const { _id, name, avatar } = user
+            const payload = { id: _id, name, avatar }
+            jwt.sign(
+              payload,
+              process.env.KEY,
+              { expiresIn: 3600 },
+              (err, token) => {
+                if (err) {
+                  console.log(err)
+                }
+                res.json({ success: true, token: 'Bearer ' + token })
+              }
+            )
           } else {
             return res.status(400).json({ password: 'incorrect password' })
           }
