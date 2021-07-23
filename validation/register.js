@@ -23,10 +23,19 @@ module.exports = function validateRegisterInput(data) {
   if (isEmpty(data.password)) {
     errors.password = 'Password field cannot be empty'
   } else {
-    if (!Validator.isLength(data.password, { min: 2, max: 30 })) {
-      errors.password = 'Password must be between 2 and 30 characters long!'
+    if (!Validator.isLength(data.password, { min: 6, max: 30 })) {
+      errors.password = 'Password must be between 6 and 30 characters long!'
     }
   }
+
+  if (isEmpty(data.confirm)) {
+    errors.confirm = 'Field cannot be empty'
+  } else {
+    if (!Validator.equals(data.password, data.confirm)) {
+      errors.confirm = 'Passwords confirmation mismatch!'
+    }
+  }
+
   return {
     errors,
     isValid: isEmpty(errors),
