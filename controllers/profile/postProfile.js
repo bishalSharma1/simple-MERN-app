@@ -1,7 +1,12 @@
 const Profile = require('../../models/Profile.js')
 const User = require('../../models/User.js')
+const validateProfileInput = require('../../validation/profile')
 
 const postProfile = (req, res) => {
+  const { errors, isValid } = validateProfileInput(req.body)
+  if (!isValid) {
+    res.status(400).json(errors)
+  }
   const errors = {}
   const profileFields = {}
   const body = req.body
@@ -43,6 +48,9 @@ const postProfile = (req, res) => {
   }
   if (body.instagram) {
     profileFields.social.instagram = body.instagram
+  }
+  if (body.twitter) {
+    profileFields.social.twitter = body.twitter
   }
 
   Profile.findOne({ user: req.user.id }).then((profile) => {
