@@ -22,7 +22,7 @@ const login = (req, res) => {
         .then((isMatch) => {
           if (isMatch) {
             const { _id, name, avatar } = user
-            const payload = { id: _id, name, avatar }
+            const payload = { id: _id, name }
             jwt.sign(
               payload,
               process.env.KEY,

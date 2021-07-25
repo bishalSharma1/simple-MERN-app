@@ -16,7 +16,7 @@ module.exports = (passport) => {
           if (user) {
             return done(null, user) //becuase error is null
           } else {
-            return done(null, false)
+            return done(null, false) //error is null but no user
           }
         })
         .catch((err) => console.log(err))
