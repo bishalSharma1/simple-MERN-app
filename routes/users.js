@@ -8,7 +8,11 @@ const login = require('../controllers/users/login.js')
 router.route('/').get((req, res) => {
   res.status(200).json({ message: 'works' })
 })
+
+//public route
 router.route('/register').post(register)
+
+//private router
 router.route('/login').post(login)
 
 router

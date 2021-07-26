@@ -1,5 +1,4 @@
 const Profile = require('../../models/Profile.js')
-const User = require('../../models/User.js')
 const validateProfileInput = require('../../validation/profile')
 
 const postProfile = (req, res) => {
@@ -7,7 +6,6 @@ const postProfile = (req, res) => {
   if (!isValid) {
     res.status(400).json(errors)
   }
-  const errors = {}
   const profileFields = {}
   const body = req.body
   profileFields.user = req.user.id
@@ -59,7 +57,7 @@ const postProfile = (req, res) => {
       Profile.findOneAndUpdate(
         { user: req.user.id },
         { $set: profileFields },
-        { new: true }
+        { new: true, useFindAndModify: false }
       )
         .then((profile) => {
           res.status(200).json(profile)
@@ -67,16 +65,25 @@ const postProfile = (req, res) => {
         .catch((err) => console.log(err))
     } else {
       //check if handle exists
-      Profile.findOne({ handle: profilefields.handle }).then((profile) => {
-        if (profile) {
-          errors.handle = 'that handle already exists'
-          return res.status(400).json(errors)
-        }
-        //create
-        new Profile(profileFields).save().then((profile) => {
-          res.status(200).json(profile)
+      Profile.findOne({ handle: profileFields.handle })
+        .then((profile) => {
+          if (profile) {
+            errors.handle = 'that handle already exists'
+            return res.status(400).json(errors)
+          }
+          //create
+          new Profile(profileFields)
+            .save()
+            .then((profile) => {
+              res.status(200).json(profile)
+            })
+            .catch((err) => {
+              res.status(500).json(err)
+            })
         })
-      })
+        .catch((err) => {
+          res.status(500).json(err)
+        })
     }
   })
 }
