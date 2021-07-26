@@ -3,6 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 
 const getProfile = require('../controllers/profile/getProfile.js')
+const deleteProfile = require('../controllers/profile/deleteProfile.js')
 const postProfile = require('../controllers/profile/postProfile.js')
 const viewProfileByUserId = require('../controllers/profile/viewProfileByUserId')
 const viewProfileByHandle = require('../controllers/profile/viewProfileByHandle')
@@ -19,6 +20,7 @@ router
   .route('/')
   .get(passport.authenticate('jwt', { session: false }), getProfile)
   .post(passport.authenticate('jwt', { session: false }), postProfile)
+  .delete(passport.authenticate('jwt', { session: false }), deleteProfile)
 
 router
   .route('/education')
