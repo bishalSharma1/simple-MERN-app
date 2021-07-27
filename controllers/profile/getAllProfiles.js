@@ -3,7 +3,7 @@ const Profile = require('../../models/Profile.js')
 const getAllProfiles = (req, res) => {
   const errors = {}
   Profile.find()
-    .populate('user', ['name', 'avatar'])
+    .populate('user', ['name', 'avatar', 'email'])
     .then((profiles) => {
       if (!profiles) {
         return res.status(404).json('there are no profiles to show')

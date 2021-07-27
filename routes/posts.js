@@ -1,8 +1,25 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose')
+const passport = require('passport')
 
-router.route('/').get((req, res) => {
+const createPost = require('../controllers/posts/createPost.js')
+const getPosts = require('../controllers/posts/getPosts.js')
+const getSinglePost = require('../controllers/posts/getSinglePost.js')
+const deletePost = require('../controllers/posts/deletePost')
+
+router.route('/test').get((req, res) => {
   res.send('posts page')
 })
+
+router
+  .route('/')
+  .post(passport.authenticate('jwt', { session: false }), createPost)
+  .get(getPosts)
+
+router
+  .route('/:post_id')
+  .get(getSinglePost)
+  .delete(passport.authenticate('jwt', { session: false }), deletePost)
 
 module.exports = router
