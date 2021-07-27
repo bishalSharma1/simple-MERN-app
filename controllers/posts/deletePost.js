@@ -1,5 +1,5 @@
 const Post = require('../../models/Post')
-const User = require('../../models/User')
+const Profile = require('../../models/Profile')
 
 const deletePost = (req, res) => {
   const errors = {}

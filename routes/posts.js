@@ -7,6 +7,7 @@ const createPost = require('../controllers/posts/createPost.js')
 const getPosts = require('../controllers/posts/getPosts.js')
 const getSinglePost = require('../controllers/posts/getSinglePost.js')
 const deletePost = require('../controllers/posts/deletePost')
+const likePost = require('../controllers/posts/likePost')
 
 router.route('/test').get((req, res) => {
   res.send('posts page')
@@ -16,6 +17,10 @@ router
   .route('/')
   .post(passport.authenticate('jwt', { session: false }), createPost)
   .get(getPosts)
+
+router
+  .route('/like/:post_id')
+  .post(passport.authenticate('jwt', { session: false }), likePost)
 
 router
   .route('/:post_id')
