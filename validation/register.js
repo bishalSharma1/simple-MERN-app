@@ -32,7 +32,7 @@ module.exports = function validateRegisterInput(data) {
     errors.confirm = 'Field cannot be empty'
   } else {
     if (!Validator.equals(data.password, data.confirm)) {
-      errors.confirm = 'Passwords confirmation mismatch!'
+      errors.confirm = 'Password mismatch!'
     }
   }
 

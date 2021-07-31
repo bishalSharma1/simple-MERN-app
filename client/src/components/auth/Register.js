@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import axios from 'axios'
+import classnames from 'classnames'
 
 const Register = () => {
-  const [registerInfo, setRegisterInfo] = useState({
+  const [registerInput, setRegisterInput] = useState({
     name: '',
     email: '',
     password: '',
@@ -12,15 +14,26 @@ const Register = () => {
   const handleChange = (e) => {
     const name = e.target.name
     const value = e.target.value
-    setRegisterInfo({ ...registerInfo, [name]: value })
+    setRegisterInput({ ...registerInput, [name]: value })
   }
+
   const submitHandler = (e) => {
     e.preventDefault()
-    const { name, email, password, confirm } = registerInfo
+    const { name, email, password, confirm } = registerInput
     const user = { name, email, password, confirm }
 
-    console.log(user)
+    axios
+      .post('api/users/register', user)
+      .then(({ data }) => {
+        console.log(data)
+      })
+      .catch((err) => {
+        setRegisterInput({ errors: err.response.data })
+        console.log(registerInput)
+      })
   }
+
+  const { errors } = registerInput
 
   return (
     <div className='register'>
@@ -33,23 +46,33 @@ const Register = () => {
               <div className='form-group'>
                 <input
                   type='text'
-                  className='form-control form-control-lg'
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.name,
+                  })}
                   placeholder='Name'
                   name='name'
-                  value={registerInfo.name}
+                  value={registerInput.name || ''}
                   onChange={handleChange}
                   required
                 />
+                {errors.name && (
+                  <div className='invalid-feedback'>{errors.name}</div>
+                )}
               </div>
               <div className='form-group'>
                 <input
                   type='email'
-                  className='form-control form-control-lg'
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.email,
+                  })}
                   placeholder='Email Address'
                   name='email'
-                  value={registerInfo.email}
+                  value={registerInput.email || ''}
                   onChange={handleChange}
                 />
+                {errors.email && (
+                  <div className='invalid-feedback'>{errors.email}</div>
+                )}
                 <small className='form-text text-muted'>
                   This site uses Gravatar so if you want a profile image, use a
                   Gravatar email
@@ -58,22 +81,32 @@ const Register = () => {
               <div className='form-group'>
                 <input
                   type='password'
-                  className='form-control form-control-lg'
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.password,
+                  })}
                   placeholder='Password'
                   name='password'
-                  value={registerInfo.password}
+                  value={registerInput.password || ''}
                   onChange={handleChange}
                 />
+                {errors.password && (
+                  <div className='invalid-feedback'>{errors.password}</div>
+                )}
               </div>
               <div className='form-group'>
                 <input
                   type='password'
-                  className='form-control form-control-lg'
+                  className={classnames('form-control form-control-lg', {
+                    'is-invalid': errors.confirm,
+                  })}
                   placeholder='Confirm Password'
                   name='confirm'
-                  value={registerInfo.confirm}
+                  value={registerInput.confirm || ''}
                   onChange={handleChange}
                 />
+                {errors.confirm && (
+                  <div className='invalid-feedback'>{errors.confirm}</div>
+                )}
               </div>
               <input type='submit' className='btn btn-info btn-block mt-4' />
             </form>
