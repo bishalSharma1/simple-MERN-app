@@ -6,11 +6,20 @@ const Register = () => {
     email: '',
     password: '',
     confirm: '',
+    errors: {},
   })
+
   const handleChange = (e) => {
     const name = e.target.name
     const value = e.target.value
     setRegisterInfo({ ...registerInfo, [name]: value })
+  }
+  const submitHandler = (e) => {
+    e.preventDefault()
+    const { name, email, password, confirm } = registerInfo
+    const user = { name, email, password, confirm }
+
+    console.log(user)
   }
 
   return (
@@ -20,7 +29,7 @@ const Register = () => {
           <div className='col-md-8 m-auto'>
             <h1 className='display-4 text-center'>Sign Up</h1>
             <p className='lead text-center'>Create your People account</p>
-            <form action='create-profile.html'>
+            <form onSubmit={submitHandler}>
               <div className='form-group'>
                 <input
                   type='text'
