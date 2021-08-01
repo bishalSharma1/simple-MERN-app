@@ -1,6 +1,10 @@
 import { useState } from 'react'
-import axios from 'axios'
 import classnames from 'classnames'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+
+import { registerUser } from '../../actions/authActions' //import action
 
 const Register = () => {
   const [registerInput, setRegisterInput] = useState({
@@ -10,6 +14,8 @@ const Register = () => {
     confirm: '',
     errors: {},
   })
+
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     const name = e.target.name
@@ -22,17 +28,13 @@ const Register = () => {
     const { name, email, password, confirm } = registerInput
     const user = { name, email, password, confirm }
 
-    axios
-      .post('api/users/register', user)
-      .then(({ data }) => {
-        console.log(data)
-      })
-      .catch((err) => {
-        setRegisterInput({ errors: err.response.data })
-        console.log(registerInput)
-      })
+    dispatch(registerUser(user))
   }
 
+  const state = useSelector((state) => state)
+  useEffect(() => {
+    setRegisterInput({ ...registerInput, errors: state.errors })
+  }, [state.errors])
   const { errors } = registerInput
 
   return (
@@ -42,7 +44,7 @@ const Register = () => {
           <div className='col-md-8 m-auto'>
             <h1 className='display-4 text-center'>Sign Up</h1>
             <p className='lead text-center'>Create your People account</p>
-            <form onSubmit={submitHandler}>
+            <form noValidate onSubmit={submitHandler}>
               <div className='form-group'>
                 <input
                   type='text'
@@ -51,7 +53,7 @@ const Register = () => {
                   })}
                   placeholder='Name'
                   name='name'
-                  value={registerInput.name || ''}
+                  value={registerInput.name}
                   onChange={handleChange}
                   required
                 />
