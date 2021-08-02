@@ -34,7 +34,10 @@ const Register = () => {
   const state = useSelector((state) => state)
 
   useEffect(() => {
-    setRegisterInput({ ...registerInput, errors: state.errors })
+    setRegisterInput((registerInput) => ({
+      ...registerInput,
+      errors: state.errors,
+    }))
   }, [state.errors])
 
   const { errors } = registerInput
@@ -55,7 +58,7 @@ const Register = () => {
                   })}
                   placeholder='Name'
                   name='name'
-                  value={registerInput.name}
+                  value={registerInput.name || ''}
                   onChange={handleChange}
                   required
                 />

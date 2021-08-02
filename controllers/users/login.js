@@ -35,7 +35,8 @@ const login = (req, res) => {
               }
             )
           } else {
-            return res.status(400).json({ password: 'incorrect password' })
+            errors.password = 'incorrect password'
+            return res.status(400).json(errors)
           }
         })
         .catch((err) => console.log(err))

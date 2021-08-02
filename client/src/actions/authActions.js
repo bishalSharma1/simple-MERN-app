@@ -12,7 +12,11 @@ import setAuthToken from '../utils/setAuthToken'
 export const registerUser = (userData) => (dispatch) => {
   axios
     .post('api/users/register', userData)
-    .then(history.push('/'))
+    .then(({ data }) => {
+      if (data) {
+        history.push('/')
+      }
+    })
     .catch((err) => {
       dispatch({
         //from redux thunk
@@ -44,6 +48,7 @@ export const loginUser = (userData) => (dispatch) => {
     })
 }
 
+//set logged in user
 export const setCurrentUser = (decoded) => {
   return {
     type: SET_CURRENT_USER,
