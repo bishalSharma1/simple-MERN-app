@@ -32,9 +32,11 @@ const Register = () => {
   }
 
   const state = useSelector((state) => state)
+
   useEffect(() => {
     setRegisterInput({ ...registerInput, errors: state.errors })
   }, [state.errors])
+
   const { errors } = registerInput
 
   return (
