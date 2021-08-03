@@ -25,8 +25,8 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault()
     const { email, password } = loginInfo
-    const user = { email, password }
-    dispatch(loginUser(user))
+    const loginData = { email, password }
+    dispatch(loginUser(loginData))
   }
 
   const store = useSelector((store) => store)
@@ -36,8 +36,8 @@ const Login = () => {
       ...loginInfo,
       errors: store.errors,
     }))
-    if (store.auth.isAuthenticated) {
-      history.push('/dashboard')
+    if (store.auth.isAuthenticated === true) {
+      history.push('/')
     }
   }, [store])
 

@@ -48,10 +48,20 @@ export const loginUser = (userData) => (dispatch) => {
     })
 }
 
-//set logged in user
+//set logged in user action
 export const setCurrentUser = (decoded) => {
   return {
     type: SET_CURRENT_USER,
     payload: decoded,
   }
+}
+
+export const logUserOut = () => (dispatch) => {
+  //remove token from local storage
+  localStorage.removeItem('jwtToken')
+  //remove auth header
+  setAuthToken(false)
+  // set current user to {} which will set isAuthenticated to false
+  const empt = {}
+  dispatch(setCurrentUser(empt))
 }
