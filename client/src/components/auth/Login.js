@@ -37,7 +37,7 @@ const Login = () => {
       errors: store.errors,
     }))
     if (store.auth.isAuthenticated === true) {
-      history.push('/')
+      history.push('/dashboard')
     }
   }, [store])
 

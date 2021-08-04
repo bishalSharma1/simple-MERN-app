@@ -7,7 +7,7 @@ import { createBrowserHistory } from 'history'
 
 import jwtDecode from 'jwt-decode'
 import setAuthToken from './utils/setAuthToken'
-import { setCurrentUser } from './actions/authActions'
+import { logUserOut, setCurrentUser } from './actions/authActions'
 
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
@@ -24,6 +24,13 @@ function App() {
     const decoded = jwtDecode(jwtToken)
     setAuthToken(jwtToken)
     store.dispatch(setCurrentUser(decoded))
+
+    //check for expired jwtToken
+    const currentTime = Date.now() / 1000
+    if (decoded.exp < currentTime) {
+      store.dispatch(logUserOut())
+      history.push('/dashboard')
+    }
   }
   return (
     <Provider store={store}>
