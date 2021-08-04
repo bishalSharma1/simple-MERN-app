@@ -16,7 +16,7 @@ const Navbar = () => {
   }
 
   const guestLinks = (
-    <ul className='navbar-nav mr-auto'>
+    <ul className='navbar-nav me-2 mb-2 mb-lg-0'>
       <li className='nav-item'>
         <Link className='nav-link' to='register'>
           Sign Up
@@ -31,28 +31,25 @@ const Navbar = () => {
   )
 
   const authLinks = (
-    <ul className='navbar-nav me-auto'>
+    <ul className='navbar-nav me-2 mb-2 mb-lg-0'>
       <li className='nav-item'>
-        <li className='nav-item'>
+        <a className='nav-link' href='/#' onClick={logoutClickHandler}>
           <img
             className='rounded-circle'
             src={auth.user.avatar}
-            alt=' gravatar'
-            style={{ width: '40px' }}
+            alt='gravatar'
+            style={{ width: '25px', marginRight: '5px' }}
           />
-        </li>{' '}
-        <li className='nav-item'>
-          <a className='nav-link' href='/#' onClick={logoutClickHandler}>
-            Logout
-          </a>
-        </li>
+          {'  '}
+          Logout
+        </a>
       </li>
     </ul>
   )
 
   return (
     <>
-      <nav className='navbar navbar-expand-sm navbar-dark bg-dark mb-4'>
+      <nav className='navbar navbar-expand-md navbar-dark bg-dark mb-4'>
         <div className='container'>
           <Link className='navbar-brand' to='landing'>
             People
@@ -60,14 +57,14 @@ const Navbar = () => {
           <button
             className='navbar-toggler'
             type='button'
-            data-toggle='collapse'
-            data-target='#mobile-nav'
+            data-bs-toggle='collapse'
+            data-bs-target='#mobile-nav'
           >
             <span className='navbar-toggler-icon'></span>
           </button>
 
           <div className='collapse navbar-collapse' id='mobile-nav'>
-            <ul className='navbar-nav ms-auto'>
+            <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
               <li className='nav-item'>
                 <Link className='nav-link' to='profiles'>
                   Developers
